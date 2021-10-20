@@ -13,11 +13,11 @@ app.get('/login', (req, res) => {
     api.login({
         usercode: req.query.usercode,
         password: req.query.password,
-        custcode: req.query.custcode,
-        pin: req.query.pin
     }).then(session => {
         sessions[session.sessionId] = session;
-        res.send({status: 'OK', sessionId: session.sessionId})
+        session.profile().then(data => {
+            res.send({status: 'OK', data: data, sessionId: session.sessionId})
+        })
     }, error => {
         res.send({status: 'error', error: error.message})
     });
