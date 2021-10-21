@@ -50,6 +50,19 @@ app.get('/:sessionId/grades', (req, res) => {
     }
 });
 
+app.get('/:sessionId/schoolCode', (req, res) => {
+    var session = sessions[req.params.sessionId];
+    if (session) {
+        session.schoolCode().then(result => {
+            res.send({status: 'OK', schoolCode: result.school_code})
+        }, error => {
+            res.send({status: 'error', error: error.message})
+        })
+    } else {
+        res.send({status: 'error', error: 'Unregistered session ID'})
+    }
+});
+
 app.get('/:sessionId/agenda', (req, res) => {
     var session = sessions[req.params.sessionId];
     if (session) {
